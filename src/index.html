@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>3apedia 2023 | Next.js App Router</title>
+
+    <link rel="stylesheet" href="/node_modules/reveal.js/dist/reset.css">
+    <link rel="stylesheet" href="/node_modules/reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="/node_modules/reveal.js/dist/theme/black.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="/node_modules/reveal.js/plugin/highlight/monokai.css">
+
+    <!-- 3AP Styles -->
+    <link rel="stylesheet" href="/src/fonts/fonts.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Title -->
+            <section>
+                <section data-background-image="https://3ap.ch/static/23314ce429cf56dfebf8ff6d8008f16c/06655/bridging_the_gap.jpg">
+                    <h1>Next.js</h1>
+                    <h1>App Router</h1>
+                </section>
+                <section>
+                    <h2>So.. What's going on with Next.js?</h2>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">Brief intro to React + Next.js</li>
+                        <li class="fragment fade-in">New Features:</li>
+                        <li class="fragment fade-in">App Router</li>
+                        <li class="fragment fade-in">Client/Server Components</li>
+                        <li class="fragment fade-in">Server-side Fetch</li>
+                        <li class="fragment fade-in">Other cool stuff</li>
+                        <li class="fragment fade-in">Questions?</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- Pt 1 -->
+            <section data-background-color="aquamarine">
+                <h3>Pt. 1:</h3>
+                <h1>Recap: React & Next.js</h1>
+            </section>
+
+            <!-- 1: what is react, next.js -->
+            <section>
+                <section>
+                    <h3>What and why.</h3>
+                    <p class="fragment fade-in">We know React: the frontend application framework.</p>
+                    <p class="fragment fade-in">React has problems:</p>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">It needs a server</li>
+                        <li class="fragment fade-in">Complex compilation</li>
+                        <li class="fragment fade-in">Runtime config</li>
+                        <li class="fragment bold fade-in"><b>All client side</b></li>
+                    </ul>
+
+                    <aside class="notes">
+                        <div class="font-mono">
+                            we're all familiar with React <br>
+                            A Framework for a framework. <br>
+                            - Kind of like Spring Boot is to Spring. Kinda. <br>
+                            React problems <br>
+                            - An external server means we need know know nginx <br>
+                            - React uses a complex Webpack build process. That's a lot to learn for a fullstack dev. <br>
+                            - It's compiled, so we're often forced to make decisions at build time. Env vars are an obvious example <br>
+                            - The biggie: everything is client side <br>
+                            - - bigger files; slower to load <br>
+                            - - performance hit with lots of JS <br>
+                            - - overkill for simple sites <br>
+                            - -  <br>
+                        </div>
+                    </aside>
+                </section>
+
+                <section>
+                    <h3>Next.js to the rescue</h3>
+                    <p class="fragment fade-in">How Next.js helps:</p>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">Next.js is a server</li>
+                        <li class="fragment fade-in">Opinionated defaults, easy to change.</li>
+                        <li class="fragment fade-in">Hybrid server/client rendering</li>
+                    </ul>
+
+                    <aside class="notes">
+                        <div class="font-mono">
+                            - It needs a server :: it is a server <br>
+                            - Complex compilation :: it's opinionated <br>
+                            - Runtime config :: hybrid server/client rendering <br>
+                            - - ☝️we'll get to that <br>
+                            - we can optimise what's rendered on the server and on the client <br>
+                            - - smaller bundled sizes <br>
+                            - - static pages <br>
+                            - - server resources (databases...) <br>
+                        </div>
+                    </aside>
+                </section>
+            </section>
+
+            <!-- 1: quick example of adding next -->
+            <section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Bootstrapping
+
+                        ```sh [1-2|4-5]
+                        # bootstrap React with Create React App
+                        npx create-react-app@latest "Project Name" . --typescript
+
+                        # bootstrap Next.js with Create Next App
+                        npx create-next-app@latest "Project Name" .
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        <div class="font-mono">
+                            creating a next ap is as easy as creating a react app <br>
+                        </div>
+                    </aside>
+                </section>
+
+                <!-- img: using cna; hints -->
+                <section>
+                    <img data-src="/src/imgs/cna-hints.png" />
+
+                    <aside class="notes">
+                        <div class="font-mono">
+                            CNA has an awesome walkthrough <br>
+                            NEW!! Go try it. <br>
+                            App router = recommended <br>
+                        </div>
+                    </aside>
+                </section>
+            </section>
+
+            <!-- Pt 2: App Router -->
+            <section data-auto-animate data-background-color="skyblue">
+                <h3>Pt. 2:</h3>
+                <h1>✨ The App Router ✨</h1>
+            </section>
+
+            <!-- 2: what is it - the new philosophy -->
+            <section>
+                <h3 data-id="title">A hybrid philosophy</h3>
+                <p class="fragment fade-in">Next.js has always been an "add on".</p>
+                <p class="fragment fade-in">Now, Next.js is central to the development process.</p>
+
+                <aside class="notes">
+                    Next 13 introduces a break from the old way of thinking <br>
+                    Next was often seen as an "add on"; not something that wants to interject too much<br>
+                    React 18 introduces a lot of new features<br>
+                    - features that will change how react code is written<br>
+                    - Next is capitalising on this upheaval by making their own changes at the same time<br>
+                </aside>
+            </section>
+
+            <!-- 2: what is it - hybrid client/server -->
+            <section>
+                <section>
+                    <h3 data-id="title">A hybrid application</h3>
+                    <p class="fragment fade-in">The app router has one purpose:</p>
+
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">It enables hybrid client/server apps.</li>
+                    </ul>
+
+                    <p class="fragment fade-in">It exists in the background. We opt in by using it.</p>
+
+                    <aside class="notes">
+                        Lets look at how that visually ...<br>
+                        NEXT PAGE
+                    </aside>
+                </section>
+                <section>
+                    <img data-src="/src/imgs/hybrid-client-server-components.avif" />
+
+                    <aside class="notes">
+                        We can break down a page into components, <br>
+                        ... and designate which ones are rendered on the server and which ones are rendered on the client <br>
+                        REPEAT<br>
+                        explain img colors <br>
+                    </aside>
+                </section>
+                <!-- strike-thru list -->
+                <section>
+                    <h3>Why that matters</h3>
+                    <p class="fragment fade-in">It addresses React's biggest downsides:</p>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in"><strike>Big files are slow to load.</strike></li>
+                        <li class="fragment fade-in"><strike>Lots of JS = poor performance</strike></li>
+                        <li class="fragment fade-in"><strike>No access to server resources</strike></li>
+                    </ul>
+
+                    <aside class="notes">
+                        Big files :: faster loading <br>
+                        Lots of JS :: less JS because many components are pre-compiled <br>
+                        client only :: we can now access server resources direcly from the component; no fetch required <br>
+                    </aside>
+                </section>
+            </section>
+
+            <!-- pt 2.1: server components -->
+            <section data-background-color="aquamarine">
+                <h3>Pt. 2.1:</h3>
+                <h1>Server Components</h1>
+            </section>
+
+            <section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Server Components
+
+                        ```tsx [1-11|1|4]
+                        import { getCats } from '@/lib/api/cats';
+
+                        export const CatList = (): JSX.Element => {
+                          const { cats } = getCats();
+
+                          return (
+                            <ul>
+                              { cats.map(cat => <li>{cat.name}</li> }
+                            </ul>
+                          );
+                        };
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        We've done away with server pages. Instead, we have Server Components. <br>
+                        we use them just like a regular component, because: <br>
+                        ALL COMPONENTS ARE SERVER COMPONENTS by default <br>
+                        <br>
+                        import as usual; use just like any other fn call <br>
+                        THIS IS EXECUTED ON THE SERVER
+                    </aside>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### What the client receives
+
+                        ```html
+                        <ul>
+                          <li>Daisy</li>
+                          <li>Kitana</li>
+                          <li>Silky</li>
+                          <li>Florence</li>
+                          <li>Elfin</li>
+                          <li>Smudge</li>
+                        </ul>
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        So much less code <br>
+                        Fun fact: those are my families cats. We've had a lot!
+                    </aside>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Handling loading the old way (on the client)
+
+                        ```tsx
+                        export const CatList = (): JSX.Element => {
+                          const [cats, setCats] = useState(undefined);
+
+                          useEffect(() => {
+                            // do something asynchronous, like call an API
+                            setCats(dataFromApiCall);
+                          });
+
+                          return (cats === undefined)
+                            ? (<ul></ul>)
+                            : (<ul> { cats.map(cat => <li>{cat.name}</li> } </ul>);
+                        };
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        We have to handle this on the client side <br>
+                    </aside>
+                </section>
+                <section>
+                    <p>🤮</p>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Handling loading with Server Components
+
+                        ```tsx [3-4]
+                        import { getCats } from '@/lib/api/cats';
+
+                        export const CatList = async (): Promise<JSX.Element> => {
+                          const { cats } = await getCats(100);
+
+                          return (
+                            <ul>
+                              { cats.map(cat => <li>{cat.name}</li> }
+                            </ul>
+                          );
+                        };
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        Same code as before, now just using async/await <br>
+                    </aside>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Handling loading with Server Components
+                        #### The parent component
+
+                        ```tsx
+                        import Spinner from '@/components/atoms/Spinner';
+                        import CatList from '@/components/molecules/CatList';
+                        import { Suspense } from 'react';
+
+                        // ...
+
+                        <Suspense fallback={<Spinner />}>
+                            <CatList />
+                        </Suspense>
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        We just wrap in a Suspense Boundry <br>
+                        Next.JS knows to not wait for the component to render. aka: the promise to resolve <br>
+                        This uses the new React 18 Streaming renderer, and new Suspense Boundry components <br>
+                        - See: React is already changing a lot. Next is just leveraging these changes.
+                    </aside>
+                </section>
+                <section>
+                    <p>❤️</p>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### We can do **anything** on the server
+
+                        ```tsx
+                        const { sqlClient } from 'some-sql-lib';
+
+                        export const getCats = async () => {
+                          const data = await sqlClient('SELECT * FROM cat_list;');
+                          const cats = data.map(row => CatMapper.fromCatData(row));
+
+                          return cats;
+                        };
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        We cat literally just call the DB as we would on a backend server. <br>
+                        To be clear, this is just a fake demo; you'd want to use a real lib, and some well-known pattern here, probs. <br>
+                        Not a hook: don't call it useNNNN.
+                    </aside>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Even Access Environment Variables 😉
+
+                        ```tsx
+                        export const getDefaultName = (): string|undefined => {
+                          return process.env.DEFAULT_NAME;
+                        };
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        This solves a huge problem. <br>
+                        Runtime config is usually a pain, as the env vars are not on the client <br>
+                        Now, they can be set on the server, and embedded in server components.
+                    </aside>
+                </section>
+            </section>
+
+            <!-- pt 2.2: client components -->
+            <section data-background-color="aquamarine">
+                <h3>Pt. 2.2:</h3>
+                <h1>Client Components</h1>
+            </section>
+
+            <section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Client Components
+
+                        ```tsx [1-13|1]
+                        'use client';
+
+                        import { getCats } from '@/lib/api/cats';
+
+                        type SearchBoxProps = { placeholder: String };
+
+                        export const SearchBox = ({ placeholder }: SearchBoxProps): JSX.Element => {
+                          const [ query, setQuery ] = useState("");
+
+                          return (
+                            <input placeholder={placeholder} onChange={event => setQuery(event.target.value)} />
+                          );
+                        };
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        The "use client" directive tells Next that this component should be rendered by the client. <br><br>
+                        "It creates a boundary between a Server and Client Component module graph" <br>
+                    </aside>
+                </section>
+                <section>
+                    <img data-src="/src/imgs/hybrid-client-server-components.avif" />
+
+                    <aside class="notes">
+                        The boundary allows Next to know what to render where. <br><br>
+
+                        The server components are rendered, and the whole page is sent to the client. <br>
+                        There, the client components are rendered.
+                    </aside>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Making Server Components clear
+
+                        ```tsx
+                        // on a client component
+                        'use client';
+
+                        // on a server component
+                        'use server';
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        - We can use 'use server' to inform Next we really really mean server side <br>
+                        - More readable - best practice. <br>
+                    </aside>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Forcing the compiler to help
+
+                        ```tsx
+                        // in a client file (like a hook)
+                        import 'client-only';
+
+                        // in a server file
+                        import 'server-only';
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        - Next throws an error if these are imported in the wrong places <br>
+                        - Not Super helpful for components <br>
+                        - Very useful for hooks, lib fns, etc. <br>
+                    </aside>
+                </section>
+            </section>
+
+            <!-- pt 2.3: keeping it atomic -->
+            <section data-background-color="aquamarine">
+                <h3>Pt. 2.3:</h3>
+                <h1>Keeping it Atomic</h1>
+            </section>
+
+            <section>
+                <section>
+                    <h3>Co-locating components</h3>
+                    <p class="fragment fade-in">Next 13 allows co-location...</p>
+                    <p class="fragment fade-in">... but I still prefer single-root Atomic Components.</p>
+
+                    <aside class="notes">
+                        Allows co-location <br>
+                        Single root /components dir still best <br>
+                        Multiple roots gets messy; hard to manage <br>
+                        - had this in Admin a long time ago; single-root solved
+                    </aside>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Atomic Design dir structure
+                        ### with client/server components
+
+                        ```
+                        (root)
+                          |- components
+                          |   |- atoms
+                          |   |   |- client
+                          |   |   |   |- CToggleSwitch.tsx
+                          |   |   |- ProfileImage.tsx
+                          |   |- molecules
+                          |   |   |- client
+                          |   |   |   |- CSearchBox.tsx
+                          |   |   |- ProfileCard.tsx
+                          |   |- ...
+                          |- app
+                              |- ...
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        - I like to put client components into /client subdirs <br>
+                        - no /server subdir as thats the default <br>
+                        - and prefix with C <br>
+                        <br>
+                        - easy to spot as a human, <br>
+                        - easy to add linting rules some day <br>
+                    </aside>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### Dividing lib by client/server
+
+                        ```
+                        (root)
+                          |- lib
+                          |   |- fns
+                          |   |   |- getCats.ts <- import client-only
+                          |   |- hooks
+                          |   |   |- useFoo.ts <- import server-only
+                          |   |- ...
+                          |- components
+                          |   |- ...
+                          |- app
+                              |- ...
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        - Can do the same for fns too <br>
+                        - hooks are client only so and can't use server fns <br>
+                        - makes sense to seperate them <br>
+                        - naming convention:
+                        - - "use" for hooks (as standard in react)
+                        - - not-"use" for server fns
+                    </aside>
+                </section>
+            </section>
+
+            <!-- pt 3: fetch  -->
+            <section data-background-color="aquamarine">
+                <h3>Pt. 3:</h3>
+                <h1>Make Fetch Happen</h1>
+            </section>
+
+            <section>
+                <section>
+                    <h3>The <pre><code>fetch</code></pre> API</h3>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">The fetch API: a web standard</li>
+                        <li class="fragment fade-in">Extended by React</li>
+                        <li class="fragment fade-in">Superpowered by Next.js</li>
+                    </ul>
+
+                    <aside class="notes">
+                        - A standard since 2015 <br>
+                        - The center of the HTTP call landscape <br>
+                        - - replaces Axios, et al. <br>
+                        - - web workers <br>
+                        - - Web caching API <br>
+                        - - Node since v16/v18 (both 2022) <br>
+                        - React adds: automatic request deduping
+                        - - encouraged to request data where you need it!
+                        - Next adds: per-request caching
+                        - - Allows Next to be smart about how the cache is hit
+                        - - per route, page, or segment ...
+                    </aside>
+                </section>
+                <section>
+                    <img data-src="/src/imgs/deduplicated-fetch-requests.avif" />
+
+                    <aside class="notes">
+                        - fetch whatever we need, where we need it <br>
+                        - automatic caching on server and client <br>
+                        - programmatic cache busting <br>
+                        - uses Web APIs on the client <br>
+                        - - interop with web workers <br>
+                    </aside>
+                </section>
+                <section>
+                    <h3>Gotcha: Use with GraphQL</h3>
+                    <h4>(And other APIs)</h4>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">Auto-caching is GET only</li>
+                        <li class="fragment fade-in">Use <pre><code>cache()</code></pre> for POST requests</li>
+                    </ul>
+
+                    <aside class="notes">
+                    </aside>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ### The Preload pattern
+
+                        ```tsx [1-17|8-9|4-6]
+                        import { getCats } from '@/lib/api/cats';
+                        import 'server-only';
+
+                        export const preload = () => {
+                          void useCats(100);
+                        };
+
+                        const CatList = async (): Promise<JSX.Element> => {
+                          const { cats } = await getCats(100);
+
+                          return (
+                            <ul>
+                              { cats.map(cat => <li>{cat.name}</li> }
+                            </ul>
+                          );
+                        };
+                        export default CatList;
+                        ```
+                    </textarea>
+
+                    <aside class="notes">
+                        - Same code as before, now just with a preload fn <br>
+                        - calling preload calls all dependant API calls <br>
+                        - - in this case, cats(100) <br>
+                        - - allows us to pre-populate the cache <br>
+                        - - esp. useful for dependant calls, eg. w/ SWR <br>
+                    </aside>
+                </section>
+            </section>
+
+            <!-- pt 4: other stuff  -->
+            <section data-background-color="aquamarine">
+                <h3>Pt. 4:</h3>
+                <h1>Other things I think are cool</h1>
+            </section>
+
+            <section>
+                <section>
+                    <h3><pre><code>@next/font</code></pre></h3>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">Optimised font importer</li>
+                        <li class="fragment fade-in">Auto bundles custom fonts</li>
+                        <li class="fragment fade-in">Layout optimiser</li>
+                    </ul>
+
+                    <aside class="notes">
+                        - Bundles fonts into the server-sent files <br>
+                        - optimises font layout and CSS <br>
+                        - auto hosts custom fonts in the Next Server <br>
+                    </aside>
+                </section>
+                <section>
+                    <h3><pre><code>@next/image</code></pre></h3>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">Optimised image tag</li>
+                        <li class="fragment fade-in">Automatic pre-fetch</li>
+                        <li class="fragment fade-in">Device-aware loading</li>
+                        <li class="fragment fade-in">Native Web API lazy loading</li>
+                    </ul>
+
+                    <aside class="notes">
+                        - aware of use case, <br>
+                        - device info; screen, bandwidth <br>
+                        - auto-sizing <br>
+                        - built-in polyfill for lazy loading <br>
+                    </aside>
+                </section>
+                <section>
+                    <h3>Fully static exporting</h3>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">Work in Next+React, ship <bold>only</bold>HTML and CSS</li>
+                        <li class="fragment fade-in">Can be hosted anywhere, cached easily</li>
+                        <li class="fragment fade-in">Opt in to the full Next.js server without code changes</li>
+                    </ul>
+
+                    <aside class="notes">
+                        - perfect for React-based mini sites <br>
+                    </aside>
+                </section>
+                <section>
+                    <h3>Metadata API & SEO</h3>
+                    <ul class="list-inside">
+                        <li class="fragment fade-in">In-JS Metadata API via exports</li>
+                        <li class="fragment fade-in">Metadata baked into HTML</li>
+                        <li class="fragment fade-in">Great low-effort SEO optimisation</li>
+                    </ul>
+
+                    <aside class="notes">
+                        - addresses an issue we had in earlier versions <br>
+                    </aside>
+                </section>
+                <section>
+                    <p>(Ask me about parallel routes...)</p>
+
+                    <aside class="notes">
+                        - we don't have time here but these are awesome! <br>
+                        - Jira-like modal+page layout <br>
+                        - data/context-aware route variations <br>
+                        - - e.g. public/private <br>
+                        - - e.g. user/team/org <br>
+                        - - e.g. list/grid/advanced <br>
+                        - - e.g. like how we had a circles explored in admin <br>
+                        - - e.g. open a blog post in a modal, the URL loads the full page <br>
+                    </aside>
+                </section>
+            </section>
+
+            <!-- Q&A -->
+            <section data-background-color="#f06292">
+                <h3>Pt. 3:</h3>
+                <h1>Questions?</h1>
+            </section>
+
+            <!-- K. Thanks. Bye -->
+            <section data-background-color="#ffe082">
+                <h3>👋</h3>
+            </section>
+
+
+        </div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/node_modules/reveal.js/dist/reveal.js"></script>
+    <script src="/node_modules/reveal.js/plugin/notes/notes.js"></script>
+    <script src="/node_modules/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="/node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+    <script>
+      let deck = new Reveal({
+        hash: true,
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+      })
+      deck.initialize();
+    </script>
+</body>
+</html>
