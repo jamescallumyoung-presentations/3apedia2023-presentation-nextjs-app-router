@@ -27,7 +27,7 @@
                     <h1>App Router</h1>
                 </section>
                 <section>
-                    <h2>So.. What's going on with Next.js?</h2>
+                    <h2>So... What's going on with Next.js?</h2>
                     <ul class="list-inside">
                         <li class="fragment fade-in">Brief intro to React + Next.js</li>
                         <li class="fragment fade-in">New Features:</li>
@@ -76,7 +76,6 @@
                         </div>
                     </aside>
                 </section>
-
                 <section>
                     <h3>Next.js to the rescue</h3>
                     <p class="fragment fade-in">How Next.js helps:</p>
@@ -114,13 +113,12 @@
                         # bootstrap Next.js with Create Next App
                         npx create-next-app@latest "Project Name" .
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        <div class="font-mono">
-                            creating a next ap is as easy as creating a react app <br>
-                        </div>
-                    </aside>
+                        Note:
+                        creating a next app is as easy as creating a react app
+
+                        foo
+                    </textarea>
                 </section>
 
                 <!-- img: using cna; hints -->
@@ -208,7 +206,6 @@
                 <h3>Pt. 2.1:</h3>
                 <h1>Server Components</h1>
             </section>
-
             <section>
                 <section data-markdown>
                     <textarea data-template>
@@ -227,16 +224,14 @@
                           );
                         };
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        We've done away with server pages. Instead, we have Server Components. <br>
-                        we use them just like a regular component, because: <br>
-                        ALL COMPONENTS ARE SERVER COMPONENTS by default <br>
-                        <br>
-                        import as usual; use just like any other fn call <br>
-                        THIS IS EXECUTED ON THE SERVER
-                    </aside>
+                        Note:
+                        - We've done away with server pages. Instead, we have Server Components.
+                        - we use them just like a regular component, because:
+                        - -> ALL COMPONENTS ARE SERVER COMPONENTS by default
+                        - import as usual; use just like any other fn call
+                        - THIS IS EXECUTED ON THE SERVER
+                    </textarea>
                 </section>
                 <section data-markdown>
                     <textarea data-template>
@@ -252,12 +247,10 @@
                           <li>Smudge</li>
                         </ul>
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        So much less code <br>
-                        Fun fact: those are my families cats. We've had a lot!
-                    </aside>
+                        Note:
+                        - So much less code
+                    </textarea>
                 </section>
                 <section data-markdown>
                     <textarea data-template>
@@ -277,11 +270,10 @@
                             : (<ul> { cats.map(cat => <li>{cat.name}</li> } </ul>);
                         };
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        We have to handle this on the client side <br>
-                    </aside>
+                        Note:
+                        - We have to handle this on the client side
+                    </textarea>
                 </section>
                 <section>
                     <p>🤮</p>
@@ -303,11 +295,10 @@
                           );
                         };
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        Same code as before, now just using async/await <br>
-                    </aside>
+                        Note:
+                        - Same code as before, now just using async/await
+                    </textarea>
                 </section>
                 <section data-markdown>
                     <textarea data-template>
@@ -325,14 +316,13 @@
                             <CatList />
                         </Suspense>
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        We just wrap in a Suspense Boundry <br>
-                        Next.JS knows to not wait for the component to render. aka: the promise to resolve <br>
-                        This uses the new React 18 Streaming renderer, and new Suspense Boundry components <br>
+                        Note:
+                        - We just wrap in a Suspense Boundry
+                        - Next.JS knows to not wait for the component to render. aka: the promise to resolve
+                        - This uses the new React 18 Streaming renderer, and new Suspense Boundry components
                         - See: React is already changing a lot. Next is just leveraging these changes.
-                    </aside>
+                    </textarea>
                 </section>
                 <section>
                     <p>❤️</p>
@@ -351,13 +341,13 @@
                           return cats;
                         };
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        We cat literally just call the DB as we would on a backend server. <br>
-                        To be clear, this is just a fake demo; you'd want to use a real lib, and some well-known pattern here, probs. <br>
-                        Not a hook: don't call it useNNNN.
-                    </aside>
+                        Note:
+                        - We can literally just call the DB as we would on a backend server.
+                        - To be clear, this is just a fake demo;
+                        - -> you'd want to use a real lib, and some well-known pattern here, probs.
+                        - Not a hook: don't call it useNNNN.
+                    </textarea>
                 </section>
                 <section data-markdown>
                     <textarea data-template>
@@ -368,13 +358,12 @@
                           return process.env.DEFAULT_NAME;
                         };
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        This solves a huge problem. <br>
-                        Runtime config is usually a pain, as the env vars are not on the client <br>
-                        Now, they can be set on the server, and embedded in server components.
-                    </aside>
+                        Note:
+                        - This solves a huge problem.
+                        - Runtime config is usually a pain, as the env vars are not on the client.
+                        - Now, they can be set on the server, and embedded in server components.
+                    </textarea>
                 </section>
             </section>
 
@@ -383,7 +372,6 @@
                 <h3>Pt. 2.2:</h3>
                 <h1>Client Components</h1>
             </section>
-
             <section>
                 <section data-markdown>
                     <textarea data-template>
@@ -404,12 +392,11 @@
                           );
                         };
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        The "use client" directive tells Next that this component should be rendered by the client. <br><br>
-                        "It creates a boundary between a Server and Client Component module graph" <br>
-                    </aside>
+                        Note:
+                        - The "use client" directive tells Next that this component should be rendered by the client.
+                        - "It creates a boundary between a Server and Client Component module graph"
+                    </textarea>
                 </section>
                 <section>
                     <img data-src="/src/imgs/hybrid-client-server-components.avif" />
@@ -432,12 +419,11 @@
                         // on a server component
                         'use server';
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        - We can use 'use server' to inform Next we really really mean server side <br>
-                        - More readable - best practice. <br>
-                    </aside>
+                        Note:
+                        - We can use 'use server' to inform Next we really really mean server side
+                        - More readable - best practice.
+                    </textarea>
                 </section>
                 <section data-markdown>
                     <textarea data-template>
@@ -450,13 +436,12 @@
                         // in a server file
                         import 'server-only';
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        - Next throws an error if these are imported in the wrong places <br>
-                        - Not Super helpful for components <br>
-                        - Very useful for hooks, lib fns, etc. <br>
-                    </aside>
+                        Note:
+                        - Next throws an error if these are imported in the wrong places
+                        - Not Super helpful for components
+                        - Very useful for hooks, lib fns, etc.
+                    </textarea>
                 </section>
             </section>
 
@@ -465,7 +450,6 @@
                 <h3>Pt. 2.3:</h3>
                 <h1>Keeping it Atomic</h1>
             </section>
-
             <section>
                 <section>
                     <h3>Co-locating components</h3>
@@ -499,16 +483,15 @@
                           |- app
                               |- ...
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        - I like to put client components into /client subdirs <br>
-                        - no /server subdir as thats the default <br>
-                        - and prefix with C <br>
-                        <br>
-                        - easy to spot as a human, <br>
-                        - easy to add linting rules some day <br>
-                    </aside>
+                        Note:
+                        - I like to put client components into /client subdirs
+                        - no /server subdir as thats the default
+                        - and prefix with "C"
+                        - why?
+                        - -> easy to spot as a human,
+                        - -> easy to add linting rules some day
+                    </textarea>
                 </section>
                 <section data-markdown>
                     <textarea data-template>
@@ -527,16 +510,15 @@
                           |- app
                               |- ...
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        - Can do the same for fns too <br>
-                        - hooks are client only so and can't use server fns <br>
-                        - makes sense to seperate them <br>
+                        Note:
+                        - Can do the same for fns too
+                        - hooks are client only so and can't use server fns
+                        - makes sense to seperate them
                         - naming convention:
-                        - - "use" for hooks (as standard in react)
-                        - - not-"use" for server fns
-                    </aside>
+                        - -> "use" for hooks (as standard in react)
+                        - -> not-"use" for server fns
+                    </textarea>
                 </section>
             </section>
 
@@ -545,10 +527,9 @@
                 <h3>Pt. 3:</h3>
                 <h1>Make Fetch Happen</h1>
             </section>
-
             <section>
                 <section>
-                    <h3>The <pre><code>fetch</code></pre> API</h3>
+                    <h3>The fetch API</h3>
                     <ul class="list-inside">
                         <li class="fragment fade-in">The fetch API: a web standard</li>
                         <li class="fragment fade-in">Extended by React</li>
@@ -577,7 +558,7 @@
                         - automatic caching on server and client <br>
                         - programmatic cache busting <br>
                         - uses Web APIs on the client <br>
-                        - - interop with web workers <br>
+                        - -> interop with web workers <br>
                     </aside>
                 </section>
                 <section>
@@ -585,7 +566,7 @@
                     <h4>(And other APIs)</h4>
                     <ul class="list-inside">
                         <li class="fragment fade-in">Auto-caching is GET only</li>
-                        <li class="fragment fade-in">Use <pre><code>cache()</code></pre> for POST requests</li>
+                        <li class="fragment fade-in">Use cache() for POST requests</li>
                     </ul>
 
                     <aside class="notes">
@@ -614,15 +595,14 @@
                         };
                         export default CatList;
                         ```
-                    </textarea>
 
-                    <aside class="notes">
-                        - Same code as before, now just with a preload fn <br>
-                        - calling preload calls all dependant API calls <br>
-                        - - in this case, cats(100) <br>
-                        - - allows us to pre-populate the cache <br>
-                        - - esp. useful for dependant calls, eg. w/ SWR <br>
-                    </aside>
+                        Note:
+                        - Same code as before, now just with a preload fn
+                        - calling preload calls all dependant API calls
+                        - - in this case, cats(100)
+                        - - allows us to pre-populate the cache
+                        - - esp. useful for dependant calls, eg. w/ SWR
+                    </textarea>
                 </section>
             </section>
 
@@ -666,7 +646,7 @@
                 <section>
                     <h3>Fully static exporting</h3>
                     <ul class="list-inside">
-                        <li class="fragment fade-in">Work in Next+React, ship <bold>only</bold>HTML and CSS</li>
+                        <li class="fragment fade-in">Work in Next+React, ship <bold>only</bold> HTML and CSS</li>
                         <li class="fragment fade-in">Can be hosted anywhere, cached easily</li>
                         <li class="fragment fade-in">Opt in to the full Next.js server without code changes</li>
                     </ul>
@@ -691,6 +671,10 @@
                     <p>(Ask me about parallel routes...)</p>
 
                     <aside class="notes">
+                        - this needs some examples. no time here
+                        - let's do a brain snack some time
+                        - .
+                        - .
                         - we don't have time here but these are awesome! <br>
                         - Jira-like modal+page layout <br>
                         - data/context-aware route variations <br>
@@ -713,7 +697,6 @@
             <section data-background-color="#ffe082">
                 <h3>👋</h3>
             </section>
-
 
         </div>
     </div>
